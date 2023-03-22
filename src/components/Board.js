@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React, {useRef, useState} from "react";
 import { Box } from "@chakra-ui/react";
 
 import board from "../assets/board.png";
@@ -33,7 +33,7 @@ const Cell = (props) => {
       break;
     default:
       element = (
-        <img src={blank} alt="blank" style={style} />
+        <img src={blank} alt="blank" style={style} onClick={props.onClick}/>
       );
   }
   return element
@@ -57,11 +57,18 @@ export const Board = (props) => {
   const fieldRef = useRef(getField(size));
   const field = fieldRef.current;
 
+  const [dummyState, setDummyState] = useState([]);
+
+  const onClick = (x, y) => {
+    field[x][y] = 'black'
+    setDummyState([]);
+  }
+
   let fieldElements = [];
   for(let y = 0; y < size; y++){
     for(let x = 0; x < size; x++){
       fieldElements.push(
-        <Cell key={y.toString()+x.toString()} pos_x={x} pos_y={y} mark={field[y][x]} />
+        <Cell key={y.toString()+x.toString()} pos_x={x} pos_y={y} mark={field[y][x]} onClick={() => onClick(x, y)} />
       );
     }
   }
